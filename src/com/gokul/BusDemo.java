@@ -25,16 +25,16 @@ public class BusDemo {
             {
 
 
-            if(userOpt.equals("Start")){
+            if(userOpt.toLowerCase().equals("start")){
+                System.out.println("===============================");
                 System.out.println("Welcome to ");
                 Booking booking = new Booking();
-                if(booking.isAvailable(bookings,buses)){
-                    bookings.add(booking);
+                bookings.add(booking.newBooking(buses.get(0),buses.get(1),buses.get(2),new Booking()));
+                if(booking.isAvailable(bookings,buses)) {
                     System.out.println("Your booking is confirmed");
-                }else {
-                    System.out.println("Sorry bus is full, Try another bus");
                 }
             }else {
+                System.out.println("---------you are exit---------------");
                 break;
             }
         }

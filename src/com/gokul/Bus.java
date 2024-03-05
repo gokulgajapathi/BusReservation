@@ -1,7 +1,7 @@
 package com.gokul;
 
 public class Bus {
-    private static int busNo;
+    private  int busNo;
     private boolean ac;
     private int capacity; //get and set
 
@@ -39,7 +39,5 @@ public class Bus {
         System.out.println("Bus No: "+busNo+"\n Ac: "+ac+"\n Total Capacity: "+capacity);
     }
 
-    public static void main(String[] args) {
-	// write your code here
-    }
+
 }
