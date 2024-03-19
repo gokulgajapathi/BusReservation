@@ -10,29 +10,31 @@ public class BusDemo {
 
         BusDAO busdao = new BusDAO();
         busdao.displayBusInfo();
-
-        String userOpt;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter \"Start\" to book and \"Stop\" to exit");
-        userOpt = sc.nextLine();
 
-        while(true){
-
-            if(userOpt.toLowerCase().equals("start")){
+        while (true) {
                 System.out.println("===============================");
                 System.out.println("Welcome to ");
                 Booking booking = new Booking();
-                if(booking.isAvailable()) {
+                if (booking.isAvailable()) {
                     BookingDAO bookingdao = new BookingDAO();
+                    // Add the booking
                     bookingdao.addBooking(booking);
                     System.out.println("Your booking is confirmed");
-                } else {
-                    throw new RuntimeException("Capacity is full!");
+                    System.out.println("If you want to cancel your booking, enter cancel");
+                    System.out.println("If you want to break the program, enter break");
+                    String userOpt = sc.nextLine();
+                    if (userOpt.equalsIgnoreCase("cancel")) {
+                        // Cancel the booking
+                        bookingdao.cancelBooking(booking);
+                        System.out.println("Booking cancelled successfully.");
+                    } else if (userOpt.equalsIgnoreCase("break")) {
+                        System.out.println("---------you are exit---------------");
+                        break;
+                    }
+                }else {
+                        throw new RuntimeException("Capacity is full!");
                 }
-            }else {
-                System.out.println("---------you are exit---------------");
-                break;
-            }
         }
         sc.close();
     }

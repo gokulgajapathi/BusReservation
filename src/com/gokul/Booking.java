@@ -48,7 +48,7 @@ public class Booking {
         BusDAO busdao = new BusDAO();
         BookingDAO bookingdao = new BookingDAO();
         int capacity = busdao.getCapacity(busNo);
-        int booked = bookingdao.getBookedCount(busNo,date)+1;
+        int booked = bookingdao.getBookedCount(busNo)+1;
         int availableSeats = capacity-booked;
 
         System.out.println("capacity: "+capacity);
