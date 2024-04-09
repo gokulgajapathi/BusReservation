@@ -1,16 +1,16 @@
-# JDBC and My SQL in Bus Booking System 
+# HIBERNATE and HQL in Bus Reservation System 
 
 This is a simple command-line application for booking bus tickets.
 
 ## Introduction
 
-This project is a Java-based bus booking system that allows users to book bus tickets through a command-line interface. It provides basic functionalities like displaying bus information, booking tickets, and canceling bookings.
+This project is a Java-based bus booking system that allows users to book bus tickets through a command-line interface. It provides basic functionalities like displaying bus information, booking tickets, and canceling bookings with booking ID.
 
 ## Features
 
 - Display bus information
 - Book bus tickets
-- Cancel booked tickets
+- Cancel booked tickets with booking ID
 
 ## Installation
 
