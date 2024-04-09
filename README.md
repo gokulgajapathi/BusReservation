@@ -27,9 +27,9 @@ cd busReservation
 
 
 ## Usage
-Run the BusDemo class:
+Run the APP class:
 `
-java com.gokul.BusDemo
+java com.gokul.APP
 `
 
 Follow the prompts to book or cancel bus tickets.
