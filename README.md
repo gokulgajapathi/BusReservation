@@ -1,4 +1,4 @@
-# Spring JDBC with JDBC Template and PostgreSQL in Bus Reservation System 
+# Spring JDBC with JDBC Template and My SQL in Bus Reservation System 
 
 ## Introduction
 
