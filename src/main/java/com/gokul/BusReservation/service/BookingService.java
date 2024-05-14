@@ -24,10 +24,7 @@ public class BookingService {
 
     public Booking setValues(Booking booking) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter bus no:");
-        System.out.println("1.Chennai");
-        System.out.println("2.Coimbatore");
-        System.out.println("3.Bangalore");
+        System.out.println("Enter bus no:\n 1.Chennai\n 2.Coimbatore\n 3.Bangalore\n");
         booking.setBusNo(sc.nextInt());
         int busNo = booking.getBusNo();
 
@@ -45,6 +42,7 @@ public class BookingService {
             booking.setDate(dateFormat.parse(dateInput));
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         System.out.println("please wait..we will check");
         return booking;
@@ -55,7 +53,13 @@ public class BookingService {
         bookingRepo.save(booking);
     }
 
-    public void cancel(int id) {
-        bookingRepo.remove(id);
+    public int cancel(int id) {
+        int rows = bookingRepo.remove(id);
+        return rows;
+    }
+
+    public void displayInfo() {
+        if(bookingRepo.findAll().isEmpty()) System.out.println("No Bookings Found");
+
     }
 }

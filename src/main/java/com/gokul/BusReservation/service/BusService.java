@@ -48,4 +48,8 @@ public class BusService {
 
         return booked<=capacity;
     }
+
+    public void cancel(int no) {
+        busRepo.remove(no);
+    }
 }

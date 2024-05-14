@@ -1,7 +1,10 @@
 create table bus (
-    busno int primary key,
-    ac BOOLEAN,
-    capacity int
+     busNo INT PRIMARY KEY,
+     ac BOOLEAN,
+     capacity INT,
+     driverName VARCHAR(100),
+     startingPoint VARCHAR(100),
+     endingPoint VARCHAR(100)
 );
 
 create table booking (
