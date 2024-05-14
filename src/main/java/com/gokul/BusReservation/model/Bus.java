@@ -3,6 +3,8 @@ package com.gokul.BusReservation.model;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Scope("prototype")
 public class Bus {
@@ -10,6 +12,10 @@ public class Bus {
     private  int busNo;
     private boolean ac;
     private int capacity;
+    private String driverName;
+    private String startingPoint;
+    private String endingPoint;
+
 
     Bus(int busNo, boolean ac, int capacity){
         this.busNo = busNo;
@@ -46,12 +52,48 @@ public class Bus {
     }
 
 
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+
+    public String getStartingPoint() {
+        return startingPoint;
+    }
+
+    public void setStartingPoint(String startingPoint) {
+        this.startingPoint = startingPoint;
+    }
+
+    public String getEndingPoint() {
+        return endingPoint;
+    }
+
+    public void setEndingPoint(String endingPoint) {
+        this.endingPoint = endingPoint;
+    }
+
+
+
+
     @Override
     public String toString() {
-        return "\n"+"Bus{" +
-                "Bus No=" +busNo +
-                ", AC=" + (ac ? "Yes" : "No") +
-                ", Capacity=" + capacity +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Bus{")
+                .append("busNo=").append(busNo)
+                .append(", ac=").append(ac)
+                .append(", capacity=").append(capacity)
+                .append(", driverName='").append(driverName).append('\'')
+                .append(", startingPoint='").append(startingPoint).append('\'')
+                .append(", endingPoint='").append(endingPoint).append('\'').append("]}");
+
+        stringBuilder.append('\n');
+
+        return stringBuilder.toString();
     }
+
 }
