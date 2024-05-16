@@ -18,15 +18,6 @@ public class BusService {
         busRepo.save(b);
     }
 
-    public BusRepo getBusRepo() {
-        return busRepo;
-    }
-
-    @Autowired
-    public void setBusRepo(BusRepo busRepo) {
-        this.busRepo = busRepo;
-    }
-
     public List<Bus> getBuses() {
         return busRepo.findAll();
 
@@ -35,7 +26,7 @@ public class BusService {
     public boolean isAvailable(int busNo) {
 
         int capacity = busRepo.getCapacity(busNo);
-        int booked = busRepo.getBookedCount(busNo);
+        int booked = busRepo.getBookedCount();
         int availableSeats = (int) (capacity-(++booked));
 
         System.out.print("booked tickets:  "+(booked));
