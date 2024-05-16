@@ -1,7 +1,6 @@
 package com.gokul.BusReservation.repo;
 
 import com.gokul.BusReservation.model.Booking;
-import com.gokul.BusReservation.model.Bus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,22 +23,22 @@ public class BookingRepo {
 
     public List<Booking> findAll() {
         String sql = "select * from booking";
-        List<Booking> bookings = jdbc.query(sql, (rs, rowNum) -> {
+        return jdbc.query(sql, (rs, rowNum) -> {
             Booking booking = new Booking();
             booking.setId(rs.getInt("id"));
             // Remove the next line if the busno column doesn't exist
-            booking.setBusNo(rs.getInt("busno"));
-            booking.setPassengerName(rs.getString("passengerName"));
-            booking.setDate(rs.getDate("date"));
+            booking.setBusNo(rs.getInt("bus_no"));
+            booking.setPassengerName(rs.getString("passenger_name"));
+            booking.setDestination(rs.getString("destination"));
+            booking.setDate(rs.getDate("date_of_journey"));
             return booking;
-        });
-
-        return bookings;
+            }
+        );
     }
 
     public void save(Booking booking) {
-        String sql = "insert into booking (busno, passengername, dateofjourney) values (?,?,?) ";
-        int rows = jdbc.update(sql,booking.getBusNo(), booking.getPassengerName(), booking.getDate());
+        String sql = "insert into booking (bus_no, passenger_name, destination, date_of_journey) values (?, ?, ?, ?) ";
+        int rows = jdbc.update(sql,booking.getBusNo(), booking.getPassengerName(), booking.getDestination(), booking.getDate());
         System.out.println(rows+" rows affected");
     }
 
@@ -48,5 +47,18 @@ public class BookingRepo {
         int rows = jdbc.update(sql,id);
         System.out.println(rows+" rows affected");
         return rows;
+    }
+
+    public Integer getLastBusNo() {
+        String sql = "select max(bus_no) from bus";
+        Integer last_bus_no = (Integer) jdbc.queryForObject(
+                sql, Integer.class);
+
+        return last_bus_no;
+    }
+
+    public List<String> findDestination(int busNo) {
+        String sql = "SELECT stop_name FROM route WHERE bus_no=?";
+        return jdbc.queryForList(sql, String.class, busNo);
     }
 }

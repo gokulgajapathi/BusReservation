@@ -12,6 +12,7 @@ public class Booking {
     private int id;
     private int busNo;
     private String passengerName;
+    private String destination;
     private Date date;
 
     public int getId() {
@@ -44,5 +45,23 @@ public class Booking {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id= " + getId() +
+                ", busNo= " + getBusNo() +
+                ", passengerName= " + getPassengerName() + '\'' +
+                ", destination= " + getDestination() + '\'' +
+                ", date= " + getDate() + '}';
     }
 }

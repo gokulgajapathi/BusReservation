@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @Repository
 public class BusRepo {
@@ -14,11 +17,20 @@ public class BusRepo {
     private JdbcTemplate jdbc;
 
 
-    public void save(Bus b) {
+    public void save(Bus bus) {
+        String sql = "INSERT INTO bus (bus_no, ac, capacity, driver_name, starting_point, ending_point, stops, fare) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        int rows = jdbc.update(sql, bus.getBusNo(), bus.getAc(), bus.getCapacity(), bus.getDriverName(), bus.getStartingPoint(), bus.getEndingPoint(), bus.getStops(), bus.getFare());
 
-        String sql = "INSERT INTO bus (busNo, ac, capacity, driverName, startingPoint, endingPoint) VALUES (?, ?, ?, ?, ?, ?)";
-        int rows = jdbc.update(sql,b.getBusNo(), b.getAc(), b.getCapacity(), b.getDriverName(), b.getStartingPoint(), b.getEndingPoint());
-        System.out.println(rows+" rows affected");
+        // Now insert routes for the bus
+        for (BusRoute route : bus.getRoute()) {
+            addRoute(bus.getBusNo(), route);
+        }
+        System.out.println(rows!=0);
+    }
+
+    private void addRoute(int busNo, BusRoute route) {
+        String sql = "INSERT INTO route (stop_name, stop_time, bus_no) VALUES (?, ?, ?)";
+        jdbc.update(sql, route.getStopName(), route.getStopTime(), busNo);
     }
 
     //      with lambda expression
@@ -26,16 +38,32 @@ public class BusRepo {
         String sql = "select * from bus";
         return jdbc.query(sql, (rs,  rowNum) -> {
                     Bus bus = new Bus();
-                    bus.setBusNo(rs.getInt("busno"));
+                    bus.setBusNo(rs.getInt("bus_no"));
                     bus.setAc(rs.getBoolean("ac"));
                     bus.setCapacity(rs.getInt("capacity"));
-                    bus.setEndingPoint(rs.getString("endingPoint"));
-                    bus.setDriverName(rs.getString("driverName"));
-                    bus.setStartingPoint(rs.getString("startingPoint"));
+                    bus.setEndingPoint(rs.getString("ending_point"));
+                    bus.setDriverName(rs.getString("driver_name"));
+                    bus.setStartingPoint(rs.getString("starting_point"));
+                    bus.setStops(rs.getInt("stops"));
+                    bus.setFare(rs.getFloat("fare"));
+                    bus.setRoute(findRoute(bus));
                     return bus;
                 }
         );
     }
+
+    private List<BusRoute> findRoute(Bus bus) {
+        String sql = "select * from route";
+        return jdbc.query(sql, (rs,  rowNum) -> {
+                    BusRoute route = new BusRoute();
+                    route.setBusNo(rs.getInt("bus_no"));
+                    route.setStopName(rs.getString("stop_name"));
+                    route.setStopTime(rs.getTime("stop_time").toLocalTime());
+                    return route;
+                }
+        );
+    }
+
 
 
 //      without lambda expression
@@ -65,7 +93,7 @@ public class BusRepo {
     }
 
     public int getCapacity(int busNo) {
-        String sql = "select capacity from bus where busno=?";
+        String sql = "select capacity from bus where bus_no=?";
         Integer capacity = (Integer) jdbc.queryForObject(
                 sql, new Object[] { busNo }, Integer.class);
 
@@ -81,7 +109,9 @@ public class BusRepo {
     }
 
     public void remove(int no) {
-        String sql = "delete from bus where busNo=?";
+        String sql = "delete from bus where bus_no=?";
+        String query = "delete from route where bus_no=?";
+        jdbc.update(query,no);
         int rows = jdbc.update(sql,no);
         System.out.println(rows+" rows affected");
     }

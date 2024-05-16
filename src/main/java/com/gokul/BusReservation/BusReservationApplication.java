@@ -4,11 +4,17 @@ import com.gokul.BusReservation.Users.Admin;
 import com.gokul.BusReservation.Users.Passenger;
 import com.gokul.BusReservation.model.*;
 import com.gokul.BusReservation.service.BookingService;
-import com.gokul.BusReservation.service.BusRouteService;
 import com.gokul.BusReservation.service.BusService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.sql.Date;
+import java.time.LocalTime;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,16 +32,16 @@ public class BusReservationApplication {
 		BusService busService = context.getBean(BusService.class);
 		Booking booking = context.getBean(Booking.class);
 		BookingService bookingService = context.getBean(BookingService.class);
-		BusRouteService busRouteService = context.getBean(BusRouteService.class);
+		BusRoute busRoute = context.getBean(BusRoute.class);
 
 
 		Admin admin = context.getBean(Admin.class);
 		admin.setUsername("admin");
-		admin.setPassword("password-admin");
+		admin.setPassword("p-admin");
 
 		Passenger passenger = context.getBean(Passenger.class);
-		passenger.setUsername("passenger");
-		passenger.setPassword("password-passenger");
+		passenger.setUsername("pa");
+		passenger.setPassword("p-pa");
 
 		Scanner sc = new Scanner(System.in);
 		boolean choice = true;
@@ -80,8 +86,9 @@ public class BusReservationApplication {
 							bus.setBusNo(busNo);
 
 							// Get AC from the user
-							System.out.print(" Enter AC: ");
-                            boolean ac = sc.nextBoolean();
+							System.out.print(" Enter AC (Yes=1 / No=0): ");
+                            int numToBool = sc.nextInt();
+							boolean ac = numToBool != 0;
 							bus.setAc(ac);
 
 							// Get capacity from the user
@@ -104,8 +111,30 @@ public class BusReservationApplication {
 							String endingPoint = sc.next();
 							bus.setEndingPoint(endingPoint);
 
-                            // Get bus route from user
-							//bus.setRoute(busRouteService.addBus(busNo));
+							// Get stops from user
+							System.out.print("Enter how many stops:");
+							int stopCount = sc.nextInt();
+							bus.setStops(stopCount);
+
+							// set fare for User
+							bus.setFare(stopCount*10);
+
+							// Get bus route from user
+							List<BusRoute> busRouteList = new ArrayList<>();
+							for (int i = 0; i < stopCount; i++) {
+								System.out.println("Enter stop name:");
+								String stopName = sc.next();
+								System.out.println("Enter stop time (HH:MM):");
+								String time = sc.next();
+								DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+								LocalTime parsedTime = LocalTime.parse(time, timeFormatter);
+
+								busRoute.setStopName(stopName);
+								busRoute.setStopTime(parsedTime);
+								busRouteList.add(busRoute);
+							}
+							bus.setRoute(busRouteList);
+
 
 							// Add Bus
 							busService.addBus(bus);
@@ -119,7 +148,8 @@ public class BusReservationApplication {
 
 						} else if (adminOpt==3) {
 							//Display Bus info
-							bookingService.displayInfo();
+							List<Booking> bookings = bookingService.displayInfo();
+							System.out.println(bookings);
 
 						} else if (adminOpt == 4) {
 							System.out.println("---------You are exit from Admin Login---------------");

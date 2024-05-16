@@ -1,6 +1,7 @@
 package com.gokul.BusReservation.service;
 
 import com.gokul.BusReservation.model.Bus;
+import com.gokul.BusReservation.model.BusRoute;
 import com.gokul.BusReservation.repo.BusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
