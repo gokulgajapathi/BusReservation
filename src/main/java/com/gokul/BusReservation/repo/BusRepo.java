@@ -5,11 +5,7 @@ import com.gokul.BusReservation.model.BusRoute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Repository
 public class BusRepo {
@@ -46,13 +42,13 @@ public class BusRepo {
                     bus.setStartingPoint(rs.getString("starting_point"));
                     bus.setStops(rs.getInt("stops"));
                     bus.setFare(rs.getFloat("fare"));
-                    bus.setRoute(findRoute(bus));
+                    bus.setRoute(findRoute());
                     return bus;
                 }
         );
     }
 
-    private List<BusRoute> findRoute(Bus bus) {
+    private List<BusRoute> findRoute() {
         String sql = "select * from route";
         return jdbc.query(sql, (rs,  rowNum) -> {
                     BusRoute route = new BusRoute();
@@ -92,7 +88,7 @@ public class BusRepo {
         this.jdbc = jdbc;
     }
 
-    public int getCapacity(int busNo) {
+    public Integer getCapacity(int busNo) {
         String sql = "select capacity from bus where bus_no=?";
         Integer capacity = (Integer) jdbc.queryForObject(
                 sql, new Object[] { busNo }, Integer.class);
@@ -100,7 +96,7 @@ public class BusRepo {
         return capacity;
     }
 
-    public int getBookedCount(int busNo) {
+    public int getBookedCount() {
         String sql = "select count(*) from booking";
         Integer bookedCount = (Integer) jdbc.queryForObject(
                 sql, Integer.class);

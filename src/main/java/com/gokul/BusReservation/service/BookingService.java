@@ -27,9 +27,9 @@ public class BookingService {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter bus no:\n 1.Chennai\n 2.Coimbatore\n 3.Bangalore\n 4.Chennai\n 5.Bangalore");
         booking.setBusNo(sc.nextInt());
-        Integer busNo = booking.getBusNo();
+        int busNo = booking.getBusNo();
 
-        Integer lastBusNo = bookingRepo.getLastBusNo();
+        int lastBusNo = bookingRepo.getLastBusNo();
         if(busNo>=lastBusNo || busNo<1){
             throw new RuntimeException("Enter correct Bus no!");
         }
