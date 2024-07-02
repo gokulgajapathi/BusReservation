@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-@Scope("prototype")
 public class Booking {
 
     private int id;
