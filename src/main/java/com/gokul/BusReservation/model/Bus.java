@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Scope("prototype")
 public class Bus {
 
     private  int busNo;
